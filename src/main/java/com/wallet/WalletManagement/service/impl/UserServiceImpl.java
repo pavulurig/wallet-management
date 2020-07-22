@@ -6,10 +6,7 @@ import com.wallet.WalletManagement.exception.UnProcessoableException;
 import com.wallet.WalletManagement.repository.UserRepository;
 import com.wallet.WalletManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -28,6 +25,39 @@ public class UserServiceImpl implements UserService {
             throw new UnProcessoableException("Account is Already Exists.");
         } else {
             return userRepository.save(user);
+        }
+    }
+
+    @Override
+    public User login(User user) throws Exception {
+        validateLoginEmail(user);
+        validateLoginPassword(user);
+        Optional<User> exisitedUser = userRepository.findByEmail(user.getEmail());
+        if (!exisitedUser.isPresent()) {
+            throw new UnProcessoableException("Account Doesnot exist with given email" + user.getEmail());
+        } else {
+            String givenPassword = user.getPassword();
+            String password = exisitedUser.get().getPassword();
+            if (givenPassword.equals(password)) {
+                return user;
+            } else {
+                throw new UnProcessoableException("Invalid Password entered.");
+            }
+        }
+    }
+
+
+    void validateLoginEmail(User user) throws Exception {
+        if (user.getEmail() == null) {
+            throw new InvalidRequestBodyException("Email is Missing while login.");
+        }else{
+            validateEmail(user);
+        }
+    }
+
+    void validateLoginPassword(User user) throws InvalidRequestBodyException {
+        if (user.getPassword() == null) {
+            throw new InvalidRequestBodyException("Password is missing while login.");
         }
     }
 
@@ -57,12 +87,12 @@ public class UserServiceImpl implements UserService {
 
     void validateEmail(User user) throws InvalidRequestBodyException {
         String email = user.getEmail();
-        if (!isValid(email)) {
+        if (!isValidEmail(email)) {
             throw new InvalidRequestBodyException("Invalid Email Provided.");
         }
     }
 
-    public static boolean isValid(String email) {
+    public static boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
