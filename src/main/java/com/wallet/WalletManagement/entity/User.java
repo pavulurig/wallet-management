@@ -1,6 +1,7 @@
 package com.wallet.WalletManagement.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -23,6 +24,28 @@ public class User {
 
     @Column(nullable = true, name = "age")
     Integer age;
+
+    @Column(nullable = false, name = "createdDate")
+    Date createdDate;
+
+    @Column(nullable = false, name = "lastUpdatedDate")
+    Date lastUpdatedDate;
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Integer getAge() {
         return age;
@@ -71,6 +94,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @PrePersist
+        //Auto Computing the value
+    void beforeInsert() {
+        this.createdDate = new Date();
+        this.lastUpdatedDate = new Date();
     }
 
 }

@@ -64,11 +64,7 @@ public class UserServiceImpl implements UserService {
     public boolean isAccountAlreadyExisted(User user) {
         String email = user.getEmail();
         Optional<User> existedUser = userRepository.findByEmail(email);
-        if (existedUser.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+        return existedUser.isPresent();
     }
 
     void validateUser(User user) throws Exception {
