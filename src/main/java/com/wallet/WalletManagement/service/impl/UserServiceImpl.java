@@ -39,11 +39,21 @@ public class UserServiceImpl implements UserService {
             String givenPassword = user.getPassword();
             String password = exisitedUser.get().getPassword();
             if (givenPassword.equals(password)) {
-                return user;
+                return exisitedUser.get();
             } else {
                 throw new UnProcessoableException("Invalid Password entered.");
             }
         }
+    }
+
+    @Override
+    public Boolean isValidUser(Long id) throws Exception {
+        Boolean isValidUser = false;
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            isValidUser = true;
+        }
+        return isValidUser;
     }
 
 

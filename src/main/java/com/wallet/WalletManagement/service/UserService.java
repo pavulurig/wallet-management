@@ -8,4 +8,7 @@ public interface UserService {
     User create(User user) throws Exception;
 
     User login(User user) throws Exception;
+
+    Boolean isValidUser(Long id) throws Exception;
+
 }

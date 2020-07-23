@@ -6,12 +6,21 @@ import org.springframework.stereotype.Component;
 public class WalletEntry {
     Long id;
     Long userId;
-    Long balance;
+    Double balance;
     Long transactionId;
     String email;
     String password;
     Double amount;
 
+    Long toUserId;
+
+    public Long getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(Long toUserId) {
+        this.toUserId = toUserId;
+    }
 
     public Long getId() {
         return id;
@@ -29,11 +38,11 @@ public class WalletEntry {
         this.userId = userId;
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

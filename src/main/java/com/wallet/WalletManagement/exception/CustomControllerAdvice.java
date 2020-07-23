@@ -1,6 +1,5 @@
 package com.wallet.WalletManagement.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +39,14 @@ public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
         errorMessage.setMessage(e.getMessage());
         errorMessage.setResponseCode(HttpStatus.UNPROCESSABLE_ENTITY.toString());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    public ResponseEntity<Object> handleResourceNotFoundException(Exception e, WebRequest webRequest) {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setDate(new Date());
+        errorMessage.setMessage(e.getMessage());
+        errorMessage.setResponseCode(HttpStatus.NOT_FOUND.toString());
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 }

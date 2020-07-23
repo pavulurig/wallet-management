@@ -1,7 +1,7 @@
 package com.wallet.WalletManagement.controller;
 
 import com.wallet.WalletManagement.entity.WalletEntry;
-import com.wallet.WalletManagement.service.AddMoneyToWalletService;
+import com.wallet.WalletManagement.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/wallet-management/")
-public class AddMoneyToWalletController {
+public class WalletController {
 
     @Autowired
-    AddMoneyToWalletService addMoneyToWalletService;
+    WalletService walletService;
 
     @RequestMapping(value = "/addMoney", method = RequestMethod.POST)
     ResponseEntity<Object> addMoneyToWallet(@RequestBody(required = true) WalletEntry walletEntry) throws Exception {
-        WalletEntry addedWalletEntry = addMoneyToWalletService.addMoneyToWallet(walletEntry);
+        WalletEntry addedWalletEntry = walletService.addMoneyToWallet(walletEntry);
         return new ResponseEntity<>(addedWalletEntry, HttpStatus.OK);
     }
 }
